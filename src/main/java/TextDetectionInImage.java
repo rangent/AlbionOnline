@@ -15,13 +15,16 @@ import com.amazonaws.services.rekognition.model.TextDetection;
 import com.amazonaws.util.IOUtils;
 
 
-
+/**
+ * Just pass in the full path to the image and this calls AWS
+ * @author brian
+ */
 public class TextDetectionInImage {
 
 	private static final float MIN_CONFIDENCE = 70;
 
 	public static void main(String[] args) throws Exception {
-		String photo="/media/sf_Screenshots/test/B45.png";
+		String photo=args[0];
 		ByteBuffer imageBytes;
 		try (InputStream inputStream = new FileInputStream(new File(photo))) {
 			imageBytes = ByteBuffer.wrap(IOUtils.toByteArray(inputStream));
@@ -37,7 +40,6 @@ public class TextDetectionInImage {
 			DetectTextResult result = rekognitionClient.detectText(request);
 			List<TextDetection> textDetections = result.getTextDetections();
 
-			System.out.println("Detected lines and words for " + photo);
 			StringBuilder[] strs = new StringBuilder[3];
 			String name = null;
 			List<Integer> prices = new ArrayList<Integer>(2); 
@@ -60,36 +62,14 @@ public class TextDetectionInImage {
 						}
 					}
 				}
-				//        	 if (text.getConfidence() > 70) {
-				//                 System.out.println("Detected: " + text.getDetectedText());
-				//                 System.out.println("Confidence: " + text.getConfidence().toString());
-				//                 System.out.println("Id : " + text.getId());
-				//                 System.out.println("Parent Id: " + text.getParentId());
-				//                 System.out.println("Type: " + text.getType());
-				//                 System.out.println();
-				//        	 }
 			}
 			name = strs[0].toString();
-//			for (i = 0; i < 3; i++) {
-//				System.out.println(i + ": " + strs[i].toString());
-//			}
-			System.out.println(name + ": " + prices.get(0) + ", " + prices.get(1));
+			
+			System.out.println(name + "," + prices.get(0) + "," + prices.get(1));
+			
 		} catch(AmazonRekognitionException e) {
 			e.printStackTrace();
 		}
 		System.exit(0);
-	}
-	
-	private void getAllFiles() {
-		File folder = new File("your/path");
-		File[] listOfFiles = folder.listFiles();
-
-	    for (int i = 0; i < listOfFiles.length; i++) {
-	      if (listOfFiles[i].isFile()) {
-	        System.out.println("File " + listOfFiles[i].getName());
-	      } else if (listOfFiles[i].isDirectory()) {
-	        System.out.println("Directory " + listOfFiles[i].getName());
-	      }
-	    }
 	}
 }
