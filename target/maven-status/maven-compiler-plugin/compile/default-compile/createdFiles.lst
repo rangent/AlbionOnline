@@ -1,0 +1,3 @@
+com/amazonaws/samples/AmazonDynamoDBSample.class
+TextDetectionInImage.class
+aws/example/rekognition/image/DetectLabelsLocalFile.class
