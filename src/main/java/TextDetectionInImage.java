@@ -145,6 +145,12 @@ public class TextDetectionInImage {
 			str = str.replace("Whirewood", "Whitewood");
 			str = str.replace("EExceptionall", "Exceptional");
 			str = str.replace("EExceptional", "Exceptional");
+			str = str.replace("\\bBa\\b", "Bar");
+			str = str.replace("\\bBal\\b", "Bar");
+			str = str.replace("\\bClott\\b", "Cloth");
+			str = str.replace("Norked", "Worked");
+			str = str.replace("leteorite", "Meteorite");
+			str = str.replace("\\bxceptional\\b", "Exceptional");
 			
 			// Numbers that contain an 'S' that should be 5
 			String startsWithNumbers = "\\d+s\\d?";
