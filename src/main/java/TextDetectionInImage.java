@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -49,7 +51,7 @@ public class TextDetectionInImage {
 			Integer[] prices = new Integer[2];
 			int i = 0;
 			boolean sawPrice = false;
-			int price = 0;
+			int priceIndex = 0;
 			for (TextDetection text: textDetections) {
 				if (text.getParentId() == null) {
 					// found a parent
@@ -58,6 +60,7 @@ public class TextDetectionInImage {
 					// bypass the nothing found to be sold/bought text
 					if (text.getDetectedText().trim().contains("No matchable")) {
 						prices[0]=-1;
+						priceIndex++;
 					} else if (text.getDetectedText().trim().contains("No competing")) {
 						prices[1]=-1;
 					}
@@ -68,11 +71,14 @@ public class TextDetectionInImage {
 						int k = Integer.parseInt(t);
 						strs[text.getParentId()].append(k).append(" ");
 						if (sawPrice) {
-							prices[price] = k;
+							prices[priceIndex++] = k;
 							sawPrice = false;
 						}
 					} catch (NumberFormatException e) {
 						// not a number
+						
+						// sometimes we get "Best matchable ####" and a number
+						// with price on the next item for some reason? Still want to look for a price though
 						if (t.contains("price") || (t.toLowerCase().contains("matchable") && !t.toLowerCase().contains("no"))) {
 							sawPrice = true;
 						} else {
@@ -108,6 +114,7 @@ public class TextDetectionInImage {
 			str = str.replace(")", "");
 			str = str.replace(".", "");
 			str = str.replace(",", "");
+			str = str.replace(":", "");
 			
 			// Common mistakes
 			str = str.replace("Simdle", "Simple");
@@ -118,21 +125,41 @@ public class TextDetectionInImage {
 			str = str.replace("EExceptional", "Exceptional");
 			str = str.replace("Exceprionall", "Exceptional");
 			str = str.replace("Exceprional", "Exceptional");
-			str = str.replace("xceptional", "Exceptional");
+			str = str.replace("EExceptionall", "Exceptional");
+			str = str.replace("\\bxceptional\\b", "Exceptional");
 			str = str.replace("Leatter", "Leather");
 			str = str.replace("Hardene", "Hardened");
+			str = str.replace("Hardenedd", "Hardened");
 			str = str.replace("Uncommonornate", "Uncommon Ornate");
 			str = str.replace("Uncommoncured", "Uncommon Cured");
 			str = str.replace("Tiranium", "Titanium");
 			str = str.replace("Sreel", "Steel");
 			str = str.replace("Uncommons", "Uncommon");
 			str = str.replace("Uncornmon", "Uncommon");
+			str = str.replace("Uncornmnon", "Uncommon");
 			str = str.replace("Adarnantium", "Adamantium");
 			str = str.replace("Mefeort", "Meteorite");
 			str = str.replace("Exceprionalsteel", "Exceptional Steel");
 			str = str.replace("Meteorit", "Meteorite");
 			str = str.replace("UncommonAshenba", "Uncommon Ashenbark");
 			str = str.replace("Whirewood", "Whitewood");
+			str = str.replace("EExceptionall", "Exceptional");
+			str = str.replace("EExceptional", "Exceptional");
+			
+			// Numbers that contain an 'S' that should be 5
+			String startsWithNumbers = "\\d+s\\d?";
+			String endsWithNumbers = "\\d?s\\d+";
+			Pattern ps = Pattern.compile(startsWithNumbers);
+			Pattern pe = Pattern.compile(endsWithNumbers);
+			Pattern endWordChar = Pattern.compile("(\\d+)\\D");
+			Matcher m = endWordChar.matcher(str);
+			if (ps.matcher(str).matches() || pe.matcher(str).matches()) {
+				str = str.toLowerCase().replace("s", "5");
+			} else if (m.matches()) {
+				// Numbers contain random letters due to the incorrect reading of the silvers symbol
+				// want to chop these off
+				str = m.group(1);
+			}
 			
 		}
 		return str;
