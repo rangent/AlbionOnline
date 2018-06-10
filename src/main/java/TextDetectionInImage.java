@@ -157,7 +157,7 @@ public class TextDetectionInImage {
 			String endsWithNumbers = "\\d?s\\d+";
 			Pattern ps = Pattern.compile(startsWithNumbers);
 			Pattern pe = Pattern.compile(endsWithNumbers);
-			Pattern endWordChar = Pattern.compile("(\\d+)\\D");
+			Pattern endWordChar = Pattern.compile("(\\d+)\\D+");
 			Matcher m = endWordChar.matcher(str);
 			if (ps.matcher(str).matches() || pe.matcher(str).matches()) {
 				str = str.toLowerCase().replace("s", "5");
