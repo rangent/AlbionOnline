@@ -31,6 +31,7 @@ public class TextDetectionInImage {
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws Exception {
 		String photo=args[0];
+		String locationFromFilename = photo.split("-")[0];
 		ByteBuffer imageBytes;
 		try (InputStream inputStream = new FileInputStream(new File(photo))) {
 			imageBytes = ByteBuffer.wrap(IOUtils.toByteArray(inputStream));
@@ -92,7 +93,7 @@ public class TextDetectionInImage {
 			}
 			name = WordUtils.capitalize(strs[0].toString().trim());
 			
-			System.out.println(name + "," + prices[0] + "," + prices[1] + "," + photo + ",\"" + Arrays.toString(strs) + "\"");
+			System.out.println(name + "," + prices[0] + "," + prices[1] + "," + locationFromFilename + "," + photo + ",\"" + Arrays.toString(strs) + "\"");
 			
 		} catch(Exception e) {
 			e.printStackTrace();
