@@ -2,7 +2,9 @@
 
 # make my target directories
 mkdir -p /media/sf_Screenshots/final
+# Clear the file and add a header row:
 > /media/sf_Screenshots/final/output.csv
+echo "Item,Selling For,Buying For,Location,Image Filename,Raw Rekognize Output" | tee /media/sf_Screenshots/final/output.csv
 
 #Make sure the project is built before using
 mvn clean install
