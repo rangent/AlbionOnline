@@ -31,7 +31,7 @@ public class TextDetectionInImage {
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws Exception {
 		String photo=args[0];
-		String locationFromFilename = photo.split("-")[0];
+		String locationFromFilename = photo.split("-")[0].split("/")[4]; // assumes "/media/sf_Screenshots/rekognition/" path
 		ByteBuffer imageBytes;
 		try (InputStream inputStream = new FileInputStream(new File(photo))) {
 			imageBytes = ByteBuffer.wrap(IOUtils.toByteArray(inputStream));
@@ -153,7 +153,9 @@ public class TextDetectionInImage {
 			str = str.replace("\\bleteorite\\b", "Meteorite");
 			str = str.replace("\\bxceptional\\b", "Exceptional");
 			str = str.replace("\\beteorite\\b", "Meteorite");
-			str = str.replace("\\bExceptionals", "Exceptional");
+			str = str.replace("\\bExceptionals\\b", "Exceptional");
+			str = str.replace("\\bExceprional\\b", "Exceptional");
+			str = str.replace("\\bBarooue\\b", "Baroque");
 			
 			// Numbers that contain an 'S' that should be 5
 			String startsWithNumbers = "\\d+s\\d?";
