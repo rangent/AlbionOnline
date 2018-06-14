@@ -2,9 +2,13 @@
 
 # make my target directories
 mkdir -p /media/sf_Screenshots/final
+
+# Get the date for the filename
+DATE=$(date +"%Y-%m-%dT%H:%M:%s")
+
 # Clear the file and add a header row:
-> /media/sf_Screenshots/final/output.csv
-echo "Item,Selling For,Buying For,Location,Image Filename,Raw Rekognize Output" | tee /media/sf_Screenshots/final/output.csv
+> /media/sf_Screenshots/final/"$DATE".csv
+echo "Item,Selling For,Buying For,Location,Image Filename,Raw Rekognize Output" | tee /media/sf_Screenshots/final/"$DATE".csv
 
 #Make sure the project is built before using
 mvn clean install
@@ -17,5 +21,5 @@ do
 	# then write the info Rekognition gets, line by line, to the output.
 	# Output is as follows:
 	# Item name,Selling For,Buying For,Location,Image Filename+Path,Full Rekognition result
-	mvn exec:java -q -Dexec.mainClass="TextDetectionInImage" -Dexec.args="$file" >> /media/sf_Screenshots/final/output.csv
+	mvn exec:java -q -Dexec.mainClass="TextDetectionInImage" -Dexec.args="$file" >> /media/sf_Screenshots/final/"$DATE".csv
 done
