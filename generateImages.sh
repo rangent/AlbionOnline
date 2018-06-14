@@ -12,7 +12,7 @@ do
 	echo "$file"
 
 	# First crop out the title of the item
-	convert /media/sf_Screenshots/raw/"$file" -crop 420x28+1079+419 /media/sf_Screenshots/processed/"$file".title.png
+	convert /media/sf_Screenshots/raw/"$file" -crop 480x28+1050+419 /media/sf_Screenshots/processed/"$file".title.png
 
 	# Then crop the sale/buy prices
 	convert /media/sf_Screenshots/raw/"$file" -crop 614x68+943+626 -negate -modulate 100,200,100 /media/sf_Screenshots/processed/"$file".price.png
