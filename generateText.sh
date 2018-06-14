@@ -4,7 +4,9 @@
 mkdir -p /media/sf_Screenshots/final
 
 # Get the date for the filename
-DATE=$(date +"%Y-%m-%dT%H:%M:%s")
+DATE=$(date +"%Y-%m-%dT%H%M%SZ")
+
+echo "Writing to /media/sf_Screenshots/final/$DATE.csv"
 
 # Clear the file and add a header row:
 > /media/sf_Screenshots/final/"$DATE".csv
@@ -23,3 +25,5 @@ do
 	# Item name,Selling For,Buying For,Location,Image Filename+Path,Full Rekognition result
 	mvn exec:java -q -Dexec.mainClass="TextDetectionInImage" -Dexec.args="$file" >> /media/sf_Screenshots/final/"$DATE".csv
 done
+
+echo "Results written to /media/sf_Screenshots/final/$DATE.csv"
