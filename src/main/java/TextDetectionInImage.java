@@ -31,7 +31,7 @@ public class TextDetectionInImage {
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws Exception {
 		String photo=args[0];
-		String locationFromFilename = photo.split("-")[0].split("/")[4]; // assumes "/media/sf_Screenshots/rekognition/" path
+		String locationFromFilename = photo.split("-")[1].split("\\.")[0]; // assumes "/media/sf_Screenshots/rekognition/" path, filenames like 0-Location.bmp.png
 		ByteBuffer imageBytes;
 		try (InputStream inputStream = new FileInputStream(new File(photo))) {
 			imageBytes = ByteBuffer.wrap(IOUtils.toByteArray(inputStream));
